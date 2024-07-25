@@ -4,6 +4,12 @@
 
 This gem provide various data about 🇮🇹 Italian subdivisions and municipalities. As well the entire updated list of provinces, regions and municipalities names, it provide useful codes (📯 postal code(s), 🌐 [ISTAT](https://www.istat.it/en/) codes, cadastrial code, population, ...).
 
+## ℹ️️ Informations
+
+This gem is a continuation of [Municipitaly by natydev](https://github.com/natydev/municipitaly).
+Database is updated up to May 2024 and there are improvements to search.
+Thanks to natydev for the brilliant project.
+
 ## 💾 Installation
 
 Add this line to your application's Gemfile:
@@ -229,3 +235,18 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 - [Database dei comuni italiani by Garda Informatica](https://www.gardainformatica.it/database-comuni-italiani) (MIT Licence)
 - [Dati censimento 2021 - Ministero dell'Interno](https://dait.interno.gov.it/territorio-e-autonomie-locali/sut/elenco_cens_var_comuni_italiani.php) (Public)
+
+# Useful info
+
+## Build gem
+
+`gem build municipitaly2.gemspec`
+
+## Check specs
+
+`bundle exec rspec`
+
+## Update database
+
+Check the `tools` folder.
+The tool is rought but it gets the job done. Hopefully I will improve it in the future.
