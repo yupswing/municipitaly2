@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/yupswing/municipitaly2'
   spec.license       = 'MIT'
   spec.metadata = {
-    # 'documentation_uri' => 'https://www.rubydoc.info/github/natydev/municipitaly/master',
+    'documentation_uri' => 'https://www.rubydoc.info/gems/municipitaly2/2.0.0/Municipitaly2',
     'rubygems_mfa_required' => 'true'
   }
 

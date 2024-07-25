@@ -46,10 +46,10 @@ module Municipitaly2
     # total <b>area</b> of municipality (Float)
     attr_reader :area
 
-    # total <b>population</b> of municipality (Float)
+    # coordinate <b>latitude</b> of municipality (Float)
     attr_reader :latitude
 
-    # total <b>population</b> of municipality (Float)
+    # coordinate <b>longitude</b> of municipality (Float)
     attr_reader :longitude
 
     def_delegator :province, :acronym, :province_acronym
