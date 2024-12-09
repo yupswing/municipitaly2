@@ -8,14 +8,17 @@ module Municipitaly2
     include RegionDelegator
     include ZoneDelegator
 
-    def initialize(region_istat:, name:, istat:, acronym:)
+    def initialize(region_istat:, name:, istat:, acronym:, area:, kind:, supcode:)
       @region_istat = region_istat
       @name = name
       @istat = istat
+      @supcode = supcode # Codice Unità Territoriale Sovracomunale
       @acronym = acronym
+      @area = area.to_f
+      @kind = kind
     end
 
-    attr_reader :region_istat, :name, :istat, :acronym
+    attr_reader :region_istat, :name, :istat, :supcode, :acronym, :area, :kind
 
     # returns an array of all +Municipitaly2::Province+ objects.
     def self.all

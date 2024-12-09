@@ -26,4 +26,9 @@ Style/ClassVars:
 Style/CommentedKeyword:
   Exclude:
     - 'lib/municipitaly2/search.rb'
-    
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false

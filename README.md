@@ -250,3 +250,7 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 Check the `tools` folder.
 The tool is rought but it gets the job done. Hopefully I will improve it in the future.
+
+### Generate vendor/data/municipalities.csv
+Update links in `tools/generate.rb` (and/or data in `tools/data/istat*`) and execute
+`./tools/generate.rb`
