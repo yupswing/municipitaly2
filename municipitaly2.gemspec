@@ -38,5 +38,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 1.64.1'
   spec.add_development_dependency 'simplecov', '~> 0.22.0'
 
-  spec.add_dependency 'csv', '~> 3.3.0' # removed from stdlib in Ruby 3.4
+  spec.add_dependency 'csv', '>= 3.3.0' # removed from stdlib in Ruby 3.4
 end

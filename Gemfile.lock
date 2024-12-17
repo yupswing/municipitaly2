@@ -1,12 +1,14 @@
 PATH
   remote: .
   specs:
-    municipitaly2 (2.0.0)
+    municipitaly2 (2.0.3)
+      csv (>= 3.3.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
+    csv (3.3.1)
     diff-lcs (1.5.1)
     docile (1.4.0)
     json (2.7.2)

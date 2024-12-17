@@ -60,6 +60,23 @@ RSpec.describe Municipitaly2::Search do
     end
   end
 
+  context '.region_from_name' do
+    context 'with an existant param region name' do
+      it 'returns a Region object' do
+        expect(described_class.region_from_name('liguria'))
+          .to be_kind_of(Municipitaly2::Region)
+        expect(described_class.region_from_name('liguria').name)
+          .to eq('Liguria')
+      end
+    end
+    context 'with nonexistent param region name' do
+      it 'returns nil' do
+        expect(described_class.region_from_name('shire'))
+          .to be_nil
+      end
+    end
+  end
+
   context '.province_from_name' do
     context 'with an existant param province name' do
       it 'returns a Province object' do

@@ -15,7 +15,8 @@ module Municipitaly2
   class Search
     include DataCaller
 
-    CLASS_METHODS = %i[zone_from_code region_from_istat regions_from_zone_code
+    CLASS_METHODS = %i[zone_from_code
+                       region_from_name region_from_istat regions_from_zone_code
                        province_from_name province_from_istat
                        province_from_acronym provinces_from_region_istat
                        provinces_from_zone_code municipalities_from_name
@@ -47,6 +48,20 @@ module Municipitaly2
     def zone_from_code # :doc:
       data.zones.find do |z|
         z.code == term
+      end
+    end
+
+    # returns a +Municipitaly2::Region+ object from a <b>region name</b> term
+    #
+    # example usage:
+    #   region = Search.region_from_name('liguria')
+    def region_from_name # :doc:
+      term_set = Municipitaly2.sanitize_term(term)
+      return nil if term_set.size < 3
+
+      data.regions.find do |r|
+        name_set = Municipitaly2.sanitize_term(r.name)
+        name_set =~ Regexp.new(term_set)
       end
     end
 

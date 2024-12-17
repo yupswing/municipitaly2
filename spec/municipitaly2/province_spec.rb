@@ -5,7 +5,8 @@ require 'municipitaly2/province'
 RSpec.describe Municipitaly2::Province do
   let(:subject) do
     described_class.new(region_istat: '01', name: 'Torino',
-                        istat: '001', acronym: 'TO')
+                        istat: '001', acronym: 'TO',
+                        area: 6826.9298, kind: 'Citta metropolitana', supcode: '201')
   end
   context 'has following attributes' do
     it 'region_istat as String' do
@@ -20,6 +21,10 @@ RSpec.describe Municipitaly2::Province do
       expect(subject.istat).to be_kind_of(String)
       expect(subject.istat).to eq('001')
     end
+    it 'supcode as String' do
+      expect(subject.supcode).to be_kind_of(String)
+      expect(subject.supcode).to eq('201')
+    end
     it 'acronym as String' do
       expect(subject.acronym).to be_kind_of(String)
       expect(subject.acronym).to eq('TO')
@@ -31,6 +36,14 @@ RSpec.describe Municipitaly2::Province do
     it 'alias iso3166 to iso3166_2' do
       expect(subject.iso3166).to be_kind_of(String)
       expect(subject.iso3166).to eq('IT-TO')
+    end
+    it 'kind as String' do
+      expect(subject.kind).to be_kind_of(String)
+      expect(subject.kind).to eq('Citta metropolitana')
+    end
+    it 'area as Float' do
+      expect(subject.area).to be_kind_of(Float)
+      expect(subject.area).to eq(6826.9298)
     end
   end
   context '.all' do
