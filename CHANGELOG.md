@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.3] - 2024-12-17
 
-- Search region by its name: `Municipitaly::Search.province_from_name('a province')`
+- Search region by its name: `Municipitaly::Search.region_from_name('a region')`
 - Fixed and tested specs
 
 ## [2.0.2] - 2024-12-13
