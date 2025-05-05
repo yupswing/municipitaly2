@@ -118,8 +118,9 @@ module Municipitaly2
     # example usage:
     #   province = Search.province_from_acronym('MI')
     def province_from_acronym # :doc:
+      acronym = term.strip.upcase
       data.provinces.find do |p|
-        p.acronym == term
+        p.acronym == acronym
       end
     end
 
