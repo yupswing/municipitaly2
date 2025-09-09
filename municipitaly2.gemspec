@@ -32,11 +32,5 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 3.0.0'
 
-  spec.add_development_dependency 'bundler', '~> 2.5.11'
-  spec.add_development_dependency 'rake', '~> 13.2.1'
-  spec.add_development_dependency 'rspec', '~> 3.13'
-  spec.add_development_dependency 'rubocop', '~> 1.64.1'
-  spec.add_development_dependency 'simplecov', '~> 0.22.0'
-
-  spec.add_dependency 'csv', '>= 3.3.0' # removed from stdlib in Ruby 3.4
+  spec.add_dependency 'csv', '~> 3.3.5' # removed from stdlib in Ruby 3.4
 end

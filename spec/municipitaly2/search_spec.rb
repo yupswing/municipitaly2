@@ -82,7 +82,7 @@ RSpec.describe Municipitaly2::Search do
       it 'returns a Province object' do
         expect(described_class.province_from_name('aosta').acronym)
           .to eq('AO')
-        expect(described_class.province_from_name("valle d' aosta").acronym)
+        expect(described_class.province_from_name('valle daosta').acronym)
           .to eq('AO')
         expect(described_class.province_from_name('Milan').acronym)
           .to eq('MI')
@@ -193,6 +193,10 @@ RSpec.describe Municipitaly2::Search do
         expect(
           described_class.municipalities_from_name('monte').size
         ).to eq(253)
+      end
+      it 'returns results ordered' do
+        expect(described_class.municipalities_from_name('pisa').first.name)
+          .to eq('Pisa')
       end
       it 'returns results with case insensitive' do
         expect(described_class.municipalities_from_name('monteforte').size)

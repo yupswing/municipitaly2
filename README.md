@@ -15,6 +15,12 @@ Thanks to natydev for the brilliant project.
 Add this line to your application's Gemfile:
 
 ```ruby
+gem 'municipitaly2'
+```
+
+or if you want to use directly from the git repo:
+
+```ruby
 gem 'municipitaly2', git: 'https://github.com/yupswing/municipitaly2.git', branch: 'master'
 ```
 
@@ -252,5 +258,6 @@ Check the `tools` folder.
 The tool is rought but it gets the job done. Hopefully I will improve it in the future.
 
 ### Generate vendor/data/municipalities.csv
+
 Update links in `tools/generate.rb` (and/or data in `tools/data/istat*`) and execute
 `./tools/generate.rb`

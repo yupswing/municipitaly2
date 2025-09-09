@@ -16,11 +16,11 @@ end
 
 def download_gi
   # https://www.gardainformatica.it/database-comuni-italiani
-  gi_source = 'https://www.gardainformatica.it/gi_db_comuni/gi_db_comuni-2024-06-30-eb64b.zip'
+  gi_source = 'https://www.gardainformatica.it/gi_db_comuni/gi_db_comuni-2025-06-30-fbe5d.zip'
 
   # Download the file and extract the content
   `wget -O /tmp/gi_db_comuni.zip #{gi_source}`
-  `unzip /tmp/gi_db_comuni.zip -d /tmp/gi_db_comuni -o`
+  `unzip -o /tmp/gi_db_comuni.zip -d /tmp/gi_db_comuni`
 
   # gi_comuni_cap.csv
   # gi_comuni_validita.csv
@@ -155,7 +155,7 @@ def add_population_to_comuni(comuni)
   comuni_copy = comuni.dup
   counter = 0
   skipped = []
-  log("Integro dati della popolazione da file 'popolazione.csv'\n")
+  log("Integro dati della popolazione da file 'data/istat_comuni_popolazione'\n")
   CSV.foreach(fullpath('./data/istat_comuni_popolazione.csv'), headers: :first_row, col_sep: ',') do |row|
     comune_term_istat = row['DESCRIZIONE COMUNE'].split('/').first
                                                  .downcase.tr('àâçèéêìòôù', 'aaceeeioou').gsub(/[^a-z]/, '')

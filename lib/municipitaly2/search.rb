@@ -16,11 +16,17 @@ module Municipitaly2
     include DataCaller
 
     CLASS_METHODS = %i[zone_from_code
-                       region_from_name region_from_istat regions_from_zone_code
-                       province_from_name province_from_istat
-                       province_from_acronym provinces_from_region_istat
-                       provinces_from_zone_code municipalities_from_name
-                       municipality_from_cadastrial municipality_from_istat
+                       region_from_name
+                       region_from_istat
+                       regions_from_zone_code
+                       province_from_name
+                       province_from_istat
+                       province_from_acronym
+                       provinces_from_region_istat
+                       provinces_from_zone_code
+                       municipalities_from_name
+                       municipality_from_cadastrial
+                       municipality_from_istat
                        municipalities_from_postal_code
                        municipalities_from_province_istat
                        municipalities_from_region_istat
@@ -152,6 +158,9 @@ module Municipitaly2
     # Term can be a partial string and is case insensitive.
     # The optional parameter +greedy+ [boolean] permit to serch exact term
     # name (if false) or partial word (true by default).
+    # Matches are sorted by relevance: exact matches first, then starting with the
+    # term, then words starting with the term, then other matches. Within each
+    # group, matches are sorted by population (descending) and then by name.
     #
     # example usage:
     #   municipalities = Search.municipalities_from_name('monte')
@@ -162,14 +171,15 @@ module Municipitaly2
 
       return [] if term_set.size < 3
 
-      regexp = if greedy
-                 Regexp.new(term_set, true)
-               else
-                 Regexp.new("^#{term_set}$", true)
-               end
-      data.municipalities.select do |m|
-        Municipitaly2.sanitize_term(m.name) =~ regexp || (m.name_alt && Municipitaly2.sanitize_term(m.name_alt) =~ regexp)
-      end
+      # regex per match "greedy" e per match esatto
+      exact_re = Regexp.new("^#{term_set}$", true)
+      search_re = greedy ? Regexp.new(term_set, true) : exact_re
+
+      # search results
+      matches = filter(data.municipalities, search_re: search_re)
+
+      # sorts results by relevance
+      matches.sort_by { |match| rank(match, term: term_set, exact_re: exact_re, greedy: greedy) }
     end
 
     # returns a +Municipitaly2::Municipality+ object from a <b>cadastrial
@@ -244,6 +254,40 @@ module Municipitaly2
       data.municipalities.select do |m|
         istats.include? m.province_istat
       end
+    end
+
+    # filters municipalities/provinces (name, name_alt required)
+    def filter(list, search_re:)
+      list.select do |item|
+        name_s = Municipitaly2.sanitize_term(item.name)
+        alt_s = item.name_alt && Municipitaly2.sanitize_term(item.name_alt)
+        (name_s =~ search_re) || (alt_s && alt_s =~ search_re)
+      end
+    end
+
+    # rank municipalities/provinces (name, name_alt, population required)
+    def rank(match, term:, exact_re:, greedy: true)
+      name_s = Municipitaly2.sanitize_term(match.name)
+      alt_s = match.name_alt && Municipitaly2.sanitize_term(match.name_alt)
+      names_s = [name_s, alt_s].compact
+
+      exact_match = names_s.any? { |n| n =~ exact_re }
+      any_word_starts = names_s.any? { |n| n.split.any? { |w| w.start_with?(term) } }
+
+      # Order: 0 = exact, 2 = any word starts, 3 = contains
+      priority = if !greedy || exact_match
+                   0 # Exact match
+                 # Disabled because it causes problems in some cases, like putting San Giuliano Milanese after Milazzo
+                 #  elsif names_s.any? { |s| s.start_with?(q) }
+                 #    1 # Starts with the term
+                 elsif any_word_starts
+                   2 # Any word starts with the term
+                 else
+                   3 # Other (match inside any word)
+                 end
+
+      # Priority, population (desc), name (asc)
+      [priority, -match.population.to_i, name_s]
     end
   end
 end
