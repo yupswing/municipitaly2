@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.5] - 2026-11-05
+
+- Updated database
+- Province changes: Sardinia was reorganized, so Sassari (`090`), Nuoro (`091`), Cagliari (`092`), Oristano (`095`) and Sud Sardegna (`111`) have new istat codes in the range `112`-`119` (e.g. Alghero is now `112001`, it was `090003`)
+- Municipality changes: Castegnero and Nanto merged into Castegnero Nanto, Lirio merged into Montalto Pavese, Murisengo is now Murisengo Monferrato, Vallecrosia is now Vallecrosia al mare, Tripi is now Tripi - Abakainon
+- Updated gems
+- Improved tool/generate.rb (use `-u` to update sources and `-g` to generate data)
+
 ## [2.0.4] - 2025-09-09
 
 - Updated database

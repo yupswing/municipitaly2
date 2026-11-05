@@ -50,7 +50,7 @@ RSpec.describe Municipitaly2::Province do
     it 'returns array of all provinces' do
       expect(described_class.all).to be_kind_of(Array)
       expect(described_class.all.first).to be_kind_of(Municipitaly2::Province)
-      expect(described_class.all.size).to eq(107)
+      expect(described_class.all.size).to eq(110) # 2026-11-05
     end
   end
   context 'municipalities' do

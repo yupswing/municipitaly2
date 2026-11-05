@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
 require 'csv'
+require 'json'
+require 'optparse'
 
 def fullpath(relative)
   File.join(__dir__, relative)
@@ -8,18 +10,25 @@ end
 
 # ==============================================================================
 
-# #INFO
+# #INFO file sorgenti dati gemma
 # municipitalies.csv - generated
 # provinces.csv - generated
 # regions.csv - static (change manually if needed)
 # zones.csv - static (change manually if needed)
 
-def download_gi
-  # https://www.gardainformatica.it/database-comuni-italiani
-  gi_source = 'https://www.gardainformatica.it/gi_db_comuni/gi_db_comuni-2025-06-30-fbe5d.zip'
+# ==============================================================================
 
+# #INFO_CUSTOMIZE modifica queste fonti per generare i sorgenti dati gemma
+
+# https://www.gardainformatica.it/database-comuni-italiani -> Scarica
+SOURCE_GI = 'https://www.gardainformatica.it/gi_db_comuni/gi_db_comuni-2026-10-30-2a6c0.zip'.freeze
+
+# https://situas.istat.it/web/#/territorio -> Amministrative -> Comuni -> Dimensione
+SOURCE_ISTAT = 'https://situas-servizi.istat.it/publish/reportspooljson?pfun=74&pdata=05/11/2026'.freeze
+
+def download_gi
   # Download the file and extract the content
-  `wget -O /tmp/gi_db_comuni.zip #{gi_source}`
+  `wget -O /tmp/gi_db_comuni.zip #{SOURCE_GI}`
   `unzip -o /tmp/gi_db_comuni.zip -d /tmp/gi_db_comuni`
 
   # gi_comuni_cap.csv
@@ -44,10 +53,10 @@ def download_gi
 end
 
 def download_istat
-  # sadly the page is protected by cloudflare
-  puts "Open manually 'https://dait.interno.gov.it/territorio-e-autonomie-locali/sut/elenco_cens_var_comuni_italiani.php' and copy the table."
-  puts "Substitute each 'tab' with a ',' and save it as 'data/istat_comuni_popolazione.csv'"
-  puts "Use this as first line 'NR.,DESCRIZIONE COMUNE,SIGLA,NOTE,POPOLAZIONE CENSITA UOMINI,POPOLAZIONE CENSITA DONNE,POPOLAZIONE CENSITA TOTALE'"
+  # the server answers "REPORT NON DISPONIBILE" to the default wget user agent, so pretend to be a browser
+  user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36'
+  `wget -U '#{user_agent}' --header='Accept: application/json' --header='Referer: https://situas.istat.it/' \
+        -O #{fullpath('./data/istat_comuni_dimensione.json')} '#{SOURCE_ISTAT}'`
 end
 
 # ==============================================================================
@@ -136,44 +145,49 @@ def add_cap_to_comuni(comuni)
   #	          "lat":"44,4114827"
   #	          "lon":"8,9326992"
   #	          "superficie_kmq":"240,6542">
-  comuni_copy = comuni.dup
+  comuni_by_istat = comuni.to_h { |c| [c['codice_istat'], c] }
   counter = 0
   log("Integro dati dei CAP da file 'gi_comuni_cap.csv'\n")
   CSV.foreach(fullpath('./data/gi_comuni_cap.csv'), headers: :first_row, col_sep: ';') do |row|
-    comune = comuni_copy.find { |c| c['codice_istat'] == row['codice_istat'] }
+    comune = comuni_by_istat[row['codice_istat']]
     next unless comune
 
     comune['cap'] << row['cap']
-    # comuni_copy.delete(comune) # could be more than one, we cannot delete
+    # could be more than one row per comune, we cannot delete it
     counter += 1
     log("Elaborate #{counter} righe", clear: true) if (counter % 100).zero?
   end
-  log("Integrati #{counter} su #{comuni.count} comuni\n", clear: true, end_block: true)
+  integrati = comuni.count { |c| c['cap'].any? }
+  log("Integrati #{integrati} su #{comuni.count} comuni (#{counter} CAP totali)\n", clear: true, end_block: true)
 end
 
 def add_population_to_comuni(comuni)
-  comuni_copy = comuni.dup
+  # {"PRO_COM_T":"001001", "COMUNE":"Agliè", "SIGLA_AUTOMOBILISTICA":"TO",
+  #  "POP_LEG":2562, "ANNO_CENSIMENTO":"2021", "POP_RES":2585, "ANNO_POP_RES":"2024", ...}
+  normalize = ->(name) { name.split('/').first.downcase.tr('àâçèéêìòôù', 'aaceeeioou').gsub(/[^a-z]/, '') }
+  comuni_by_istat = comuni.to_h { |c| [c['codice_istat'], c] }
+  # fallback for comuni whose istat code differs between sources (e.g. Sardinia provinces reorganization)
+  comuni_by_name = comuni.group_by { |c| normalize.call(c['denominazione_ita']) }
   counter = 0
   skipped = []
-  log("Integro dati della popolazione da file 'data/istat_comuni_popolazione'\n")
-  CSV.foreach(fullpath('./data/istat_comuni_popolazione.csv'), headers: :first_row, col_sep: ',') do |row|
-    comune_term_istat = row['DESCRIZIONE COMUNE'].split('/').first
-                                                 .downcase.tr('àâçèéêìòôù', 'aaceeeioou').gsub(/[^a-z]/, '')
-    comune = comuni_copy.find do |c|
-      comune_term_gi = c['denominazione_ita'].downcase.tr('àâçèéêìòôù', 'aaceeeioou').gsub(/[^a-z]/, '')
-      row['SIGLA'] == c['sigla_provincia'] && comune_term_istat == comune_term_gi
+  log("Integro dati della popolazione da file 'data/istat_comuni_dimensione.json'\n")
+  rows = JSON.parse(File.read(fullpath('./data/istat_comuni_dimensione.json')))['resultset']
+  rows.each do |row|
+    comune = comuni_by_istat[row['PRO_COM_T']]
+    unless comune
+      candidates = comuni_by_name.fetch(normalize.call(row['COMUNE']), []).reject { |c| c.key?('popolazione') }
+      comune = candidates.first if candidates.size == 1
     end
     if comune
-      comune['popolazione'] = row['POPOLAZIONE CENSITA TOTALE'].gsub('.', '').to_i
-      comuni_copy.delete(comune)
+      comune['popolazione'] = row['POP_LEG'].to_i
+      counter += 1
     else
-      skipped << "Comune not found: #{row['DESCRIZIONE COMUNE']}"
+      skipped << "Comune not found: #{row['COMUNE']} (#{row['PRO_COM_T']})"
     end
     log("Elaborate #{counter} righe", clear: true) if (counter % 100).zero?
-    counter += 1
   end
   log("Integrati #{counter} su #{comuni.count} comuni (#{skipped.count} saltati)\n", clear: true, end_block: true)
-  pp skipped
+  pp skipped if skipped.any?
 end
 
 def find_comune(comuni, text)
@@ -222,7 +236,7 @@ def write_comuni(comuni)
                          latitude
                          longitude]
 
-               comuni.each do |c|
+               comuni.sort_by { |c| [c['codice_istat_provincia'], c['codice_istat_comune']] }.each do |c|
                  csv << [c['codice_istat_provincia'],
                          c['denominazione_ita'],
                          c['denominazione_altra'],
@@ -262,7 +276,7 @@ def write_province(province)
                          p['denominazione_provincia'],
                          p['codice_sovracomunale'],
                          p['codice_istat'],
-                         p['tipologia_provincia'],
+                         p['tipologia_provincia'].capitalize.sub('Unita non', 'Unità non'), # the source dropped the accent
                          p['superficie_kmq']]
                end
              end)
@@ -276,12 +290,34 @@ end
 #   puts "#{row['codice_belfiore']} #{row['sigla_nazione']} - #{row['denominazione_nazione']}"
 # end
 
-download_gi
+options = {}
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage: #{File.basename($PROGRAM_NAME)} [-u] [-g]"
+  opts.on('-u', '--update', 'Scarica le fonti dati aggiornate (GI e ISTAT)') { options[:update] = true }
+  opts.on('-g', '--generate', 'Elabora i dati e genera i file in vendor/data') { options[:generate] = true }
+  opts.on('-h', '--help', 'Mostra questo help') do
+    puts opts
+    exit
+  end
+end
+parser.parse!
 
-comuni = get_comuni
-add_cap_to_comuni(comuni)
-add_population_to_comuni(comuni)
-write_comuni(comuni)
+if options.empty?
+  puts parser
+  exit
+end
 
-province = get_province
-write_province(province)
+if options[:update]
+  download_gi
+  download_istat
+end
+
+if options[:generate]
+  comuni = get_comuni
+  add_cap_to_comuni(comuni)
+  add_population_to_comuni(comuni)
+  write_comuni(comuni)
+
+  province = get_province
+  write_province(province)
+end

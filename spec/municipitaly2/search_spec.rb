@@ -256,9 +256,9 @@ RSpec.describe Municipitaly2::Search do
   context '.municipality_from_istat' do
     context 'with an existant param istat' do
       it 'returns a Municipality object' do
-        expect(described_class.municipality_from_istat('090003'))
+        expect(described_class.municipality_from_istat('112001'))
           .to be_kind_of(Municipitaly2::Municipality)
-        expect(described_class.municipality_from_istat('090003').name)
+        expect(described_class.municipality_from_istat('112001').name)
           .to eq('Alghero')
       end
     end

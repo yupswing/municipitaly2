@@ -60,7 +60,18 @@ RSpec.describe Municipitaly2::Municipality do
       expect(described_class.all).to be_kind_of(Array)
       expect(described_class.all.first)
         .to be_kind_of(Municipitaly2::Municipality)
-      expect(described_class.all.size).to eq(7896) # 2024-05-27
+      expect(described_class.all.size).to eq(7894) # 2026-11-05
+    end
+  end
+  context 'name_full' do
+    it 'returns only the name when there is no alternative name' do
+      expect(Municipitaly2::Search.municipality_from_istat('001001').name_full)
+        .to eq('Agliè')
+    end
+    it 'joins name and alternative name' do
+      municipality = described_class.all.find(&:name_alt)
+      expect(municipality.name_full)
+        .to eq("#{municipality.name}/#{municipality.name_alt}")
     end
   end
   context 'province' do

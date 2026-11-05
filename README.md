@@ -7,7 +7,7 @@ This gem provide various data about 🇮🇹 Italian subdivisions and municipali
 ## ℹ️️ Informations
 
 This gem is a continuation of [Municipitaly by natydev](https://github.com/natydev/municipitaly).
-Database is updated up to May 2024 and there are improvements to search.
+Database is updated up to November 2026 and there are improvements to search.
 Thanks to natydev for the brilliant project.
 
 ## 💾 Installation
@@ -254,10 +254,5 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Update database
 
-Check the `tools` folder.
-The tool is rought but it gets the job done. Hopefully I will improve it in the future.
-
-### Generate vendor/data/municipalities.csv
-
-Update links in `tools/generate.rb` (and/or data in `tools/data/istat*`) and execute
-`./tools/generate.rb`
+Check the beginning of the `tools/generate.rb` file to update the sources. Then execute
+`./tools/generate.rb -u -g` (`-u` downloads the sources, `-g` generates the data; run it without arguments for help).

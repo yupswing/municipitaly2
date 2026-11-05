@@ -8,20 +8,20 @@ region_istat,acronym,name,supcode,istat,kind,area
 02,AO,Valle d'Aosta/Vallée d'Aoste,007,007,Provincia,3260.5014
 07,IM,Imperia,008,008,Provincia,1156.1005
 07,SV,Savona,009,009,Provincia,1546.3207
-07,GE,Genova,210,010,Citta metropolitana,1834.6851
-07,SP,La Spezia,011,011,Provincia,882.3457
-03,VA,Varese,012,012,Provincia,1198.6612
-03,CO,Como,013,013,Provincia,1280.2443
-03,SO,Sondrio,014,014,Provincia,3195.7809
-03,MI,Milano,215,015,Citta metropolitana,1574.8656
-03,BG,Bergamo,016,016,Provincia,2754.9776
-03,BS,Brescia,017,017,Provincia,4785.2655
-03,PV,Pavia,018,018,Provincia,2968.1907
-03,CR,Cremona,019,019,Provincia,1768.7761
-03,MN,Mantova,020,020,Provincia,2342.0461
+07,GE,Genova,210,010,Citta metropolitana,1834.6835
+07,SP,La Spezia,011,011,Provincia,882.351
+03,VA,Varese,012,012,Provincia,1198.6802
+03,CO,Como,013,013,Provincia,1280.1198
+03,SO,Sondrio,014,014,Provincia,3195.7783
+03,MI,Milano,215,015,Citta metropolitana,1574.7666
+03,BG,Bergamo,016,016,Provincia,2755.2379
+03,BS,Brescia,017,017,Provincia,4785.0574
+03,PV,Pavia,018,018,Provincia,2966.6124
+03,CR,Cremona,019,019,Provincia,1768.9441
+03,MN,Mantova,020,020,Provincia,2342.0232
 04,BZ,Bolzano/Bozen,021,021,Provincia autonoma,7399.8664
-04,TN,Trento,022,022,Provincia autonoma,6207.8899
-05,VR,Verona,023,023,Provincia,3096.0326
+04,TN,Trento,022,022,Provincia autonoma,6207.706
+05,VR,Verona,023,023,Provincia,3096.0219
 05,VI,Vicenza,024,024,Provincia,2721.8512
 05,BL,Belluno,025,025,Provincia,3609.4576
 05,TV,Treviso,026,026,Provincia,2478.9348
@@ -47,62 +47,65 @@ region_istat,acronym,name,supcode,istat,kind,area
 09,LU,Lucca,046,046,Provincia,1773.9099
 09,PT,Pistoia,047,047,Provincia,964.6782
 09,FI,Firenze,248,048,Citta metropolitana,3513.2944
-09,LI,Livorno,049,049,Provincia,1215.7199
+09,LI,Livorno,049,049,Provincia,1215.7028
 09,PI,Pisa,050,050,Provincia,2444.7171
 09,AR,Arezzo,051,051,Provincia,3233.6923
 09,SI,Siena,052,052,Provincia,3820.9566
-09,GR,Grosseto,053,053,Provincia,4502.9911
+09,GR,Grosseto,053,053,Provincia,4502.9989
 10,PG,Perugia,054,054,Provincia,6337.4156
 10,TR,Terni,055,055,Provincia,2126.9428
 12,VT,Viterbo,056,056,Provincia,3615.0313
 12,RI,Rieti,057,057,Provincia,2749.589
 12,RM,Roma,258,058,Citta metropolitana,5366.6113
-12,LT,Latina,059,059,Provincia,2258.038
+12,LT,Latina,059,059,Provincia,2258.0156
 12,FR,Frosinone,060,060,Provincia,3246.9386
 15,CE,Caserta,061,061,Provincia,2652.8768
 15,BN,Benevento,062,062,Provincia,2079.5411
-15,NA,Napoli,263,063,Citta metropolitana,1180.1174
+15,NA,Napoli,263,063,Citta metropolitana,1180.1855
 15,AV,Avellino,064,064,Provincia,2806.5339
-15,SA,Salerno,065,065,Provincia,4956.2621
+15,SA,Salerno,065,065,Provincia,4956.2757
 13,AQ,L'Aquila,066,066,Provincia,5048.0699
 13,TE,Teramo,067,067,Provincia,1953.9881
 13,PE,Pescara,068,068,Provincia,1229.5741
 13,CH,Chieti,069,069,Provincia,2599.7078
-14,CB,Campobasso,070,070,Provincia,2926.2367
-16,FG,Foggia,071,071,Provincia,7006.6088
-16,BA,Bari,272,072,Citta metropolitana,3862.3022
+14,CB,Campobasso,070,070,Provincia,2926.2366
+16,FG,Foggia,071,071,Provincia,7006.6136
+16,BA,Bari,272,072,Citta metropolitana,3862.3178
 16,TA,Taranto,073,073,Provincia,2467.6295
-16,BR,Brindisi,074,074,Provincia,1861.4448
-16,LE,Lecce,075,075,Provincia,2797.8753
-17,PZ,Potenza,076,076,Provincia,6594.7722
+16,BR,Brindisi,074,074,Provincia,1861.447
+16,LE,Lecce,075,075,Provincia,2797.9263
+17,PZ,Potenza,076,076,Provincia,6594.7331
 17,MT,Matera,077,077,Provincia,3479.1405
 18,CS,Cosenza,078,078,Provincia,6707.7324
 18,CZ,Catanzaro,079,079,Provincia,2415.463
-18,RC,Reggio Calabria,280,080,Citta metropolitana,3209.3112
-19,TP,Trapani,081,081,Libero consorzio di comuni,2470.0599
-19,PA,Palermo,282,082,Citta metropolitana,5007.2403
-19,ME,Messina,283,083,Citta metropolitana,3265.6385
+18,RC,Reggio Calabria,280,080,Citta metropolitana,3209.3179
+19,TP,Trapani,081,081,Libero consorzio di comuni,2470.0623
+19,PA,Palermo,282,082,Citta metropolitana,5007.2455
+19,ME,Messina,283,083,Citta metropolitana,3265.6742
 19,AG,Agrigento,084,084,Libero consorzio di comuni,3053.8476
 19,CL,Caltanissetta,085,085,Libero consorzio di comuni,2137.878
 19,EN,Enna,086,086,Libero consorzio di comuni,2574.4569
-19,CT,Catania,287,087,Citta metropolitana,3575.7532
+19,CT,Catania,287,087,Citta metropolitana,3575.7472
 19,RG,Ragusa,088,088,Libero consorzio di comuni,1623.8624
-19,SR,Siracusa,089,089,Libero consorzio di comuni,2123.7244
-20,SS,Sassari,090,090,Provincia,7695.3123
-20,NU,Nuoro,091,091,Provincia,5640.3301
-20,CA,Cagliari,292,092,Citta metropolitana,1250.0802
+19,SR,Siracusa,089,089,Libero consorzio di comuni,2123.7064
 06,PN,Pordenone,093,093,Unità non amministrativa,2274.8873
 14,IS,Isernia,094,094,Provincia,1535.1224
-20,OR,Oristano,095,095,Provincia,2991.3615
 01,BI,Biella,096,096,Provincia,912.8755
-03,LC,Lecco,097,097,Provincia,805.2909
+03,LC,Lecco,097,097,Provincia,805.291
 03,LO,Lodi,098,098,Provincia,783.5348
 08,RN,Rimini,099,099,Provincia,922.7185
 09,PO,Prato,100,100,Provincia,365.3896
 18,KR,Crotone,101,101,Provincia,1735.2799
-18,VV,Vibo Valentia,102,102,Provincia,1149.3117
+18,VV,Vibo Valentia,102,102,Provincia,1149.3157
 01,VB,Verbano-Cusio-Ossola,103,103,Provincia,2262.1551
-03,MB,Monza e della Brianza,108,108,Provincia,405.2053
+03,MB,Monza e della Brianza,108,108,Provincia,405.1954
 11,FM,Fermo,109,109,Provincia,862.9883
 16,BT,Barletta-Andria-Trani,110,110,Provincia,1542.5857
-20,SU,Sud Sardegna,111,111,Provincia,6532.8363
+20,SS,Sassari,312,112,Citta metropolitana,4285.4411
+20,OT,Gallura Nord-Est Sardegna,113,113,Provincia,3409.6307
+20,NU,Nuoro,114,114,Provincia,3992.0931
+20,OR,Oristano,115,115,Provincia,2991.3615
+20,OG,Ogliastra,116,116,Provincia,1854.9309
+20,VS,Medio Campidano,117,117,Provincia,1518.098
+20,CA,Cagliari,318,118,Citta metropolitana,4310.5465
+20,SU,Sulcis Iglesiente,119,119,Provincia,1747.3795
